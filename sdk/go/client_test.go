@@ -25,7 +25,7 @@ func TestGetOnlineFeatures(t *testing.T) {
 			name: "valid",
 			req: OnlineFeaturesRequest{
 				Features: []string{
-					"driver:rating",
+					"driver:name",
 					"rating",
 				},
 				Entities: []Row{
@@ -39,8 +39,9 @@ func TestGetOnlineFeatures(t *testing.T) {
 					FieldValues: []*serving.GetOnlineFeaturesResponse_FieldValues{
 						{
 							Fields: map[string]*types.Value{
-								"driver_project/driver:rating": Int64Val(1),
-								"driver_project/rating":        Int64Val(1),
+								"driver_id": Int64Val(1),
+								"driver_project/driver:name": StrVal("david"),
+								"driver_project/rating": Int64Val(3),
 							},
 						},
 					},
@@ -51,8 +52,9 @@ func TestGetOnlineFeatures(t *testing.T) {
 					FieldValues: []*serving.GetOnlineFeaturesResponse_FieldValues{
 						{
 							Fields: map[string]*types.Value{
-								"driver:rating": Int64Val(1),
-								"rating":        Int64Val(1),
+								"driver_id": Int64Val(1),
+								"driver:name": StrVal("david"),
+								"rating": Int64Val(3),
 							},
 						},
 					},
