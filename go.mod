@@ -4,17 +4,18 @@ require (
 	github.com/Masterminds/goutils v1.1.0 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible // indirect
-	github.com/mrzzy/feast/sdk/go v0.0.0-20200516052424-09ff3dda724c // indirect
+	github.com/mrzzy/feast/sdk/go v0.0.0-20200519094743-426d6dbd35c7 // indirect
 	github.com/ghodss/yaml v1.0.0
 	github.com/gogo/protobuf v1.3.1 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
-	github.com/golang/mock v1.2.0
+	github.com/golang/mock v1.4.3
 	github.com/golang/protobuf v1.4.2
 	github.com/google/go-cmp v0.4.0
 	github.com/huandu/xstrings v1.2.0 // indirect
 	github.com/lyft/protoc-gen-validate v0.1.0 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/mrzzy/feast/sdk/go v0.0.0-20200521020050-5cd46dda91b3 // indirect
 	github.com/mwitkow/go-proto-validators v0.2.0 // indirect
 	github.com/pseudomuto/protoc-gen-doc v1.3.0 // indirect
 	github.com/pseudomuto/protokit v0.2.0 // indirect
