@@ -31,9 +31,7 @@ require (
 	gopkg.in/yaml.v2 v2.2.4
 	istio.io/gogo-genproto v0.0.0-20191212213402-78a529a42cd8 // indirect
 	istio.io/tools v0.0.0-20191228030621-c4eb6a11039c // indirect
-    github.com/mrzzy/feast/sdk/go v0.0.0
+    github.com/mrzzy/feast/sdk/go v0.5.1-dev
 )
-
-replace github.com/mrzzy/feast/sdk/go v0.0.0 => ./sdk/go
 
 go 1.13
