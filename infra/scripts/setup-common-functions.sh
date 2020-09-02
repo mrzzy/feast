@@ -136,7 +136,7 @@ install_python_with_miniconda_and_feast_sdk() {
   # Install Feast Python SDK and test requirements
   make compile-protos-python
   pip install -qe sdk/python
-  pip install -qr tests/e2e/requirements.txt
+  pip install -qr tests/e2e/python/requirements.txt
 }
 
 print_banner() {

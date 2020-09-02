@@ -126,7 +126,7 @@ start_feast_serving /tmp/serving.warehouse.application.yml
 
 install_python_with_miniconda_and_feast_sdk
 
-print_banner "Running end-to-end tests with pytest at 'tests/e2e'"
+print_banner "Running end-to-end tests at 'tests/e2e'"
 # Default artifact location setting in Prow jobs
 LOGS_ARTIFACT_PATH=/logs/artifacts
 
@@ -134,7 +134,7 @@ ORIGINAL_DIR=$(pwd)
 cd tests/e2e
 
 set +e
-pytest bq/* -v -m ${PYTEST_MARK} --gcs_path ${JOBS_STAGING_LOCATION} --junitxml=${LOGS_ARTIFACT_PATH}/python-sdk-test-report.xml
+pytest python/bq/* -v -m ${PYTEST_MARK} --gcs_path ${JOBS_STAGING_LOCATION} --junitxml=${LOGS_ARTIFACT_PATH}/python-sdk-test-report.xml
 TEST_EXIT_CODE=$?
 
 if [[ ${TEST_EXIT_CODE} != 0 ]]; then

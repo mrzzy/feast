@@ -272,7 +272,7 @@ source ~/.bashrc
 cd $ORIGINAL_DIR
 make compile-protos-python
 pip install -qe sdk/python
-pip install -qr tests/e2e/requirements.txt
+pip install -qr tests/e2e/python/requirements.txt
 
 echo "
 ============================================================
@@ -289,7 +289,7 @@ serving_ip=$(kubectl get -o jsonpath="{.status.loadBalancer.ingress[0].ip}" serv
 jobcontroller_ip=$(kubectl get -o jsonpath="{.status.loadBalancer.ingress[0].ip}" service ${HELM_RELEASE_NAME}-feast-jobcontroller)
 
 set +e
-pytest -s -v bq/bq-batch-retrieval.py -m dataflow_runner --core_url "$core_ip:6565" --serving_url "$serving_ip:6566" \
+pytest -s -v python/bq/bq-batch-retrieval.py -m dataflow_runner --core_url "$core_ip:6565" --serving_url "$serving_ip:6566" \
  --jobcontroller_url "$jobcontroller_ip:6570" --gcs_path "gs://${TEMP_BUCKET}" --junitxml=${LOGS_ARTIFACT_PATH}/python-sdk-test-report.xml
 TEST_EXIT_CODE=$?
 
