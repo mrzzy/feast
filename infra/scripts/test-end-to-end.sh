@@ -31,7 +31,7 @@ This script will run end-to-end tests for Feast Core and Online Serving.
     - Feast + Python SDK: Install Python 3.7.4, 
         Feast Python SDK and run end-to-end tests from tests/e2e via pytest.
     - Feast + Java SDK: Install Feast Java SDK and run end to end tests via Maven.
-    - TODO: Feast + Go SDK: Install Feast Go SDK and run end to end tests via go test.
+    - Feast + Go SDK: Install Feast Go SDK and run end to end tests via go test.
 "
 
 source ${SCRIPTS_DIR}/setup-common-functions.sh
@@ -145,6 +145,10 @@ then
         -Dfeast.serving.host=localhost \
         -Dfeast.serving.port=6566 \
         -Dfeast.auth.enabled=${ENABLE_AUTH})
+elif [ $TARGET_SDK = "go" ]
+then
+    setup_retrieval_test $PYTEST_ARGS
+    (cd go; go test)
 fi
 
 TEST_EXIT_CODE=$?
