@@ -129,9 +129,9 @@ export GOOGLE_APPLICATION_CREDENTIALS=/etc/gcloud/service-account.json
 # Go, Java SDK only supports retrieving from Feast.
 # Also wait for Feast to be ready for retrieval by retrieving with the Python E2E first.
 setup_retrieval_test() {
-    pytest python/redis/basic-ingest-redis-serving.py -k --allow-dirty=true "test_basic_register_feature_set_success"
-    pytest python/redis/basic-ingest-redis-serving.py -k --allow-dirty=true "test_basic_ingest_success"
-    pytest python/redis/basic-ingest-redis-serving.py -k --allow-dirty=true "test_basic_retrieve_online_success"
+    pytest python/redis/basic-ingest-redis-serving.py --allow-dirty=true -k "test_basic_register_feature_set_success" $1
+    pytest python/redis/basic-ingest-redis-serving.py --allow-dirty=true -k "test_basic_ingest_success" $1
+    pytest python/redis/basic-ingest-redis-serving.py --allow-dirty=true -k "test_basic_retrieve_online_success" $1
 }
     
 PYTEST_ARGS="--enable_auth=${ENABLE_AUTH} --junitxml=${LOGS_ARTIFACT_PATH}/python-sdk-test-report.xml"
