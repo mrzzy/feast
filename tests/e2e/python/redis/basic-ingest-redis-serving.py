@@ -60,7 +60,7 @@ def basic_dataframe(entities, features, ingest_time, n_size, null_features=[]):
     for entity_name in entities:
         df_dict[entity_name] = list(range(1, n_size + 1))
     for feature_name in features:
-        df_dict[feature_name] = [np.random.rand() for _ in range(n_size)]
+        df_dict[feature_name] = [float(i) for i in range(1, n_size + 1)]
     for null_feature_name in null_features:
         df_dict[null_feature_name] = [None for _ in range(n_size)]
     return pd.DataFrame(df_dict)
