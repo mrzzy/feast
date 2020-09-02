@@ -46,7 +46,7 @@ def basic_dataframe(entities, features, ingest_time, n_size, null_features=[]):
     """
     Generate a basic feast-ingestable dataframe for testing.
     Entity value incrementally increase from 1 to n_size
-    Features values are randomlly generated floats.
+    Features values are assigned to be the same as the entity.
     entities - names of entities
     features - names of the features
     ingest_time - ingestion timestamp

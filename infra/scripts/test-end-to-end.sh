@@ -10,6 +10,8 @@ test -z ${SKIP_BUILD_JARS} && SKIP_BUILD_JARS="false"
 test -z ${GOOGLE_CLOUD_PROJECT} && GOOGLE_CLOUD_PROJECT="kf-feast"
 test -z ${TEMP_BUCKET} && TEMP_BUCKET="feast-templocation-kf-feast"
 test -z ${JOBS_STAGING_LOCATION} && JOBS_STAGING_LOCATION="gs://${TEMP_BUCKET}/staging-location"
+# Target SDK to run E2E tests with. Supported values: 'python', 'java', 'go'
+test -z ${TARGET_SDK} && TARGET_SDK="python"
 
 # Get the current build version using maven (and pom.xml)
 export FEAST_BUILD_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
@@ -25,8 +27,11 @@ This script will run end-to-end tests for Feast Core and Online Serving.
 1. Install Redis as the store for Feast Online Serving.
 2. Install Postgres for persisting Feast metadata.
 3. Install Kafka and Zookeeper as the Source in Feast.
-4. Install Python 3.7.4, Feast Python SDK and run end-to-end tests from
-   tests/e2e via pytest.
+4. Run End to End Tests
+    - Feast + Python SDK: Install Python 3.7.4, 
+        Feast Python SDK and run end-to-end tests from tests/e2e via pytest.
+    - Feast + Java SDK: Install Feast Java SDK and run end to end tests via Maven.
+    - TODO: Feast + Go SDK: Install Feast Go SDK and run end to end tests via go test.
 "
 
 source ${SCRIPTS_DIR}/setup-common-functions.sh
@@ -109,7 +114,7 @@ start_feast_jobcontroller /tmp/jc.warehouse.application.yml
 start_feast_serving /tmp/serving.warehouse.application.yml
 install_python_with_miniconda_and_feast_sdk
 
-print_banner "Running end-to-end tests with pytest at 'tests/e2e'"
+print_banner "Running end-to-end tests at 'tests/e2e'"
 
 # Default artifact location setting in Prow jobs
 LOGS_ARTIFACT_PATH=/logs/artifacts
@@ -119,9 +124,30 @@ cd tests/e2e
 
 set +e
 export GOOGLE_APPLICATION_CREDENTIALS=/etc/gcloud/service-account.json
-pytest python/redis/* --enable_auth=${ENABLE_AUTH} --junitxml=${LOGS_ARTIFACT_PATH}/python-sdk-test-report.xml
-TEST_EXIT_CODE=$?
 
+# Use Python E2E to setup test (register feature set, ingest feature data) as 
+# Go, Java SDK only supports retrieving from Feast.
+# Also wait for Feast to be ready for retrieval by retrieving with the Python E2E first.
+setup_retrieval_test() {
+    pytest python/redis/basic-ingest-redis-serving.py -k --allow-dirty=true "test_basic_register_feature_set_success"
+    pytest python/redis/basic-ingest-redis-serving.py -k --allow-dirty=true "test_basic_ingest_success"
+    pytest python/redis/basic-ingest-redis-serving.py -k --allow-dirty=true "test_basic_retrieve_online_success"
+}
+    
+PYTEST_ARGS="--enable_auth=${ENABLE_AUTH} --junitxml=${LOGS_ARTIFACT_PATH}/python-sdk-test-report.xml"
+if [ $TARGET_SDK = "python" ]
+then 
+    pytest python/redis/* $PYTEST_ARGS
+elif [ $TARGET_SDK = "java" ]
+then
+    setup_retrieval_test $PYTEST_ARGS
+    (cd java; mvn spotless:apply clean test \
+        -Dfeast.serving.host=localhost \
+        -Dfeast.serving.port=6566 \
+        -Dfeast.auth.enabled=${ENABLE_AUTH})
+fi
+
+TEST_EXIT_CODE=$?
 if [[ ${TEST_EXIT_CODE} != 0 ]]; then
   echo "[DEBUG] Printing logs"
   ls -ltrh /var/log/feast*

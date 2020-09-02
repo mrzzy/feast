@@ -146,7 +146,7 @@ presubmits:
     always_run: true
     spec:
       containers:
-      - image: maven:3.6-jdk-11
+      - image: gcr.io/kf-feast/feast-ci:latest
         command: ["infra/scripts/test-end-to-end.sh"]
         resources:
           requests:
@@ -160,7 +160,7 @@ presubmits:
     always_run: true
     spec:
       containers:
-      - image: maven:3.6-jdk-11
+      - image: gcr.io/kf-feast/feast-ci:latest
         command: ["infra/scripts/test-end-to-end.sh", "True"]
         resources:
           requests:
@@ -169,6 +169,34 @@ presubmits:
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /etc/gcloud/service-account.json
+        volumeMounts:
+        - mountPath: /etc/gcloud/service-account.json
+          name: service-account
+          readOnly: true
+          subPath: service-account.json
+      volumes:
+      - name: service-account
+        secret:
+          secretName: feast-service-account
+    skip_branches:
+    - ^v0\.(3|4)-branch$
+
+  - name: test-end-to-end-auth-java-sdk
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: gcr.io/kf-feast/feast-ci:latest
+        command: ["infra/scripts/test-end-to-end.sh", "True"]
+        resources:
+          requests:
+            cpu: "6"
+            memory: "6144Mi"
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/gcloud/service-account.json
+        - name: TARGET_SDK
+          value: java
         volumeMounts:
         - mountPath: /etc/gcloud/service-account.json
           name: service-account
