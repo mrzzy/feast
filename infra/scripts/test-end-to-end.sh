@@ -141,6 +141,7 @@ elif [ $TARGET_SDK = "java" ]
 then
     setup_retrieval_test $PYTEST_ARGS
     (cd ../../; mvn -pl tests/e2e/java spotless:apply clean test \
+        -Dfeast.e2e.enabled=true \
         -Dfeast.serving.host=localhost \
         -Dfeast.serving.port=6566 \
         -Dfeast.auth.enabled=${ENABLE_AUTH})

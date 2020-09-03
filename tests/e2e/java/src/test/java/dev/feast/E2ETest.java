@@ -30,15 +30,18 @@ import java.util.Map;
 import java.util.Properties;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 /**
  * E2E tests Java SDK retrieval with Feast. Expects Feast to have a registered Feature Set
  * 'customer_transactions' that is already ingested with data and ready for retrieval. See
  * tests/e2e/python/redis/basic-ingest-redis-serving.py for test setup code. Properties used to
- * configure test params: feast.serving.host - hostname of the feast serving instance to connect to.
- * feast.serving.port - port of the feast serving instance to connect to. feast.auth.enabled - if
- * true, uses authentication to connect to Feast serving.
+ * configure test params: feast.e2e.enabled - must be set to 'true' for the e2e test to run,
+ * otherwise test is disabled. feast.serving.host - hostname of the feast serving instance to
+ * connect to. feast.serving.port - port of the feast serving instance to connect to.
+ * feast.auth.enabled - if true, uses authentication to connect to Feast serving.
  */
+@EnabledIfSystemProperty(named = "feast.e2e.enabled", matches = "true")
 public class E2ETest {
   private static FeastClient client;
   private static boolean isAuthenticationEnabled;
