@@ -17,7 +17,7 @@ install_gcloud_sdk() {
   fi
   
  # Activate service account credentials if specified.
- if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]
+ if [ -n $GOOGLE_APPLICATION_CREDENTIALS ]
  then
    export GOOGLE_APPLICATION_CREDENTIALS
    gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}

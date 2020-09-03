@@ -5,7 +5,7 @@ set -o pipefail
 [[ $1 == "True" ]] && ENABLE_AUTH="true" || ENABLE_AUTH="false"
 echo "Authenication enabled : ${ENABLE_AUTH}"
 
-test -z ${GOOGLE_APPLICATION_CREDENTIALS} && GOOGLE_APPLICATION_CREDENTIALS="/etc/gcloud/service-account.json"
+test -z ${GOOGLE_APPLICATION_CREDENTIALS} && GOOGLE_APPLICATION_CREDENTIALS=""
 test -z ${SKIP_BUILD_JARS} && SKIP_BUILD_JARS="false"
 test -z ${GOOGLE_CLOUD_PROJECT} && GOOGLE_CLOUD_PROJECT="kf-feast"
 test -z ${TEMP_BUCKET} && TEMP_BUCKET="feast-templocation-kf-feast"
@@ -123,7 +123,6 @@ ORIGINAL_DIR=$(pwd)
 cd tests/e2e
 
 set +e
-export GOOGLE_APPLICATION_CREDENTIALS=/etc/gcloud/service-account.json
 
 # Use Python E2E to setup test (register feature set, ingest feature data) as 
 # Go, Java SDK only supports retrieving from Feast.
@@ -141,7 +140,7 @@ then
 elif [ $TARGET_SDK = "java" ]
 then
     setup_retrieval_test $PYTEST_ARGS
-    (cd java; mvn spotless:apply clean test \
+    (cd ../../; mvn -pl tests/e2e/java spotless:apply clean test \
         -Dfeast.serving.host=localhost \
         -Dfeast.serving.port=6566 \
         -Dfeast.auth.enabled=${ENABLE_AUTH})
