@@ -10,17 +10,17 @@ install_test_tools() {
 }
 
 install_gcloud_sdk() {
-  print_banner "Installing Google Cloud SDK. (GOOGLE_APPLICATION_CREDENTIALS: '$GOOGLE_APPLICATION_CREDENTIALS')"
+  print_banner "Installing Google Cloud SDK. (GOOGLE_APPLICATION_CREDENTIALS: '$GOOGLE_APPLICATION_CREDENTIALS')_"
   if [[ ! $(command -v gsutil) ]]; then
     CURRENT_DIR=$(dirname "$BASH_SOURCE")
-    . "${CURRENT_DIR}"/install-google-cloud-sdk.sh
+    # Activate service account credentials if specified.
+    if [ -z $GOOGLE_APPLICATION_CREDENTIALS ]
+    then
+      . "${CURRENT_DIR}"/install-google-cloud-sdk.sh
+    else
+      . "${CURRENT_DIR}"/install-google-cloud-sdk.sh --with-key-file $GOOGLE_APPLICATION_CREDENTIALS
+    fi
   fi
-  
- # Activate service account credentials if specified.
- if [ -n $GOOGLE_APPLICATION_CREDENTIALS ]
- then
-   export GOOGLE_APPLICATION_CREDENTIALS
-   gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
  fi
 }
 
