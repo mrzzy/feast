@@ -15,9 +15,13 @@ install_gcloud_sdk() {
     CURRENT_DIR=$(dirname "$BASH_SOURCE")
     . "${CURRENT_DIR}"/install-google-cloud-sdk.sh
   fi
-
-  export GOOGLE_APPLICATION_CREDENTIALS
-  gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
+  
+ # Activate service account credentials if specified.
+ if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]
+ then
+   export GOOGLE_APPLICATION_CREDENTIALS
+   gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
+ fi
 }
 
 install_and_start_local_redis() {
