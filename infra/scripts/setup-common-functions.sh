@@ -21,7 +21,6 @@ install_gcloud_sdk() {
       . "${CURRENT_DIR}"/install-google-cloud-sdk.sh --with-key-file $GOOGLE_APPLICATION_CREDENTIALS
     fi
   fi
- fi
 }
 
 install_and_start_local_redis() {
