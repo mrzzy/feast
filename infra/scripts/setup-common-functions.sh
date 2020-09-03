@@ -10,7 +10,7 @@ install_test_tools() {
 }
 
 install_gcloud_sdk() {
-  print_banner "Installing Google Cloud SDK"
+  print_banner "Installing Google Cloud SDK. (GOOGLE_APPLICATION_CREDENTIALS: '$GOOGLE_APPLICATION_CREDENTIALS')"
   if [[ ! $(command -v gsutil) ]]; then
     CURRENT_DIR=$(dirname "$BASH_SOURCE")
     . "${CURRENT_DIR}"/install-google-cloud-sdk.sh
