@@ -148,7 +148,7 @@ then
 elif [ $TARGET_SDK = "go" ]
 then
     setup_retrieval_test $PYTEST_ARGS
-    (cd go; go test)
+    (cd go; env SERVING_HOST=localhost SERVING_PORT=6566 USE_AUTH=$USE_AUTH go test)
 fi
 
 TEST_EXIT_CODE=$?
