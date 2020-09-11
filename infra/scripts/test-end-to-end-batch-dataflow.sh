@@ -221,6 +221,8 @@ source ${SCRIPTS_DIR}/setup-common-functions.sh
 
 wait_for_docker_image gcr.io/kf-feast/feast-core:"${IMAGE_TAG}"
 wait_for_docker_image gcr.io/kf-feast/feast-serving:"${IMAGE_TAG}"
+wait_for_docker_image gcr.io/kf-feast/feast-jobcontroller:"${IMAGE_TAG}"
+wait_for_docker_image gcr.io/kf-feast/feast-jupyter:"${IMAGE_TAG}"
 
 envsubst $'$TEMP_BUCKET $DATASET_NAME $GCLOUD_PROJECT $GCLOUD_NETWORK $SPECS_TOPIC $FEATURES_TOPIC \
   $GCLOUD_SUBNET $GCLOUD_REGION $IMAGE_TAG $HELM_COMMON_NAME $feast_kafka_1_ip
